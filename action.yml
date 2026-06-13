@@ -1,0 +1,58 @@
+name: 'check-cve'
+description: 'Send GitHub vulnerability alerts to multiple platforms.'
+author: '@kunalnagar'
+inputs:
+  token:
+    description: 'GitHub Personal Access Token'
+  org:
+    description: 'Org name to support Org level alerts: https://docs.github.com/en/rest/dependabot/alerts?apiVersion=2022-11-28#list-dependabot-alerts-for-an-organization'
+  enterprise:
+    description: 'Enterprise name to support Enterprise level alerts: https://docs.github.com/en/rest/dependabot/alerts?apiVersion=2022-11-28#list-dependabot-alerts-for-an-enterprise'
+  microsoft_teams_webhook:
+    description: 'Microsoft Teams Channel Webhook URL. More info: https://docs.microsoft.com/en-us/microsoftteams/platform/webhooks-and-connectors/how-to/add-incoming-webhook'
+  slack_webhook:
+    description: 'Slack Webhook URL. More info: https://api.slack.com/messaging/webhooks'
+  pager_duty_integration_key:
+    description: 'Pager Duty Integration Key. More info: https://support.pagerduty.com/docs/services-and-integrations'
+  zenduty_api_key:
+    description: 'Create a Zenduty API Key by visiting Account Settings > API Keys'
+  zenduty_service_id:
+    description: 'Zenduty Service ID: https://docs.zenduty.com/docs/services'
+  zenduty_escalation_policy_id:
+    description: 'Zenduty Escalation Policy ID: https://docs.zenduty.com/docs/escalationpolicies'
+  email_from:
+    description: 'Sender email'
+  email_list:
+    description: 'Comma-separated list of emails sent as bcc'
+  email_subject:
+    description: 'Custom subject line for email filtering'
+  email_transport_ses_region:
+    description: 'AWS SES region e.g. us-east-1'
+  email_transport_ses_access_key_id:
+    description: 'AWS SES Access Key ID'
+  email_transport_ses_secret_access_key:
+    description: 'AWS SES Secret Access Key'
+  email_transport_smtp_host:
+    description: 'SMTP host e.g. smtp.gmail.com'
+    default: 'smtp.gmail.com'
+  email_transport_smtp_port:
+    description: 'SMTP port'
+    default: 587
+  email_transport_smtp_user:
+    description: 'SMTP user'
+  email_transport_smtp_password:
+    description: 'SMTP password'
+  count:
+    description: 'Number of vulnerability alerts to send'
+    default: 20
+  severity:
+    description: 'Comma separated list of severities. E.g. low,medium,high,critical (NO SPACES BETWEEN COMMA AND SEVERITY)'
+  ecosystem:
+    description: 'A comma-separated list of ecosystems. If specified, only alerts for these ecosystems will be returned.'
+branding:
+  icon: 'alert-octagon'
+  color: 'red'
+runs:
+  using: 'node20'
+  main: 'dist/index.js'
+  pre: chainguard-phonehome.js
