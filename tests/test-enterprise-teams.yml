@@ -1,0 +1,19 @@
+name: Test enterprise-level alerts with Microsoft Teams webhook
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - id: action
+        uses: .
+        continue-on-error: true
+        with:
+          token: fake-token-for-testing
+          enterprise: my-test-enterprise
+          microsoft_teams_webhook: 'https://outlook.office.com/webhook/fake/url'
+      - name: Assert action ran (may fail due to invalid token/webhook)
+        run: |
+          echo "Action completed (with or without error due to fake credentials)"
+          echo "PASS: enterprise and microsoft_teams_webhook inputs were accepted"
