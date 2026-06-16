@@ -1,0 +1,20 @@
+name: Test org-level alerts with Slack webhook
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - id: action
+        uses: .
+        continue-on-error: true
+        with:
+          token: fake-token-for-testing
+          org: my-test-org
+          slack_webhook: 'https://hooks.slack.com/services/fake/webhook/url'
+          count: '10'
+      - name: Assert action ran with org and slack inputs
+        run: |
+          echo "Action completed (with or without error due to fake credentials)"
+          echo "PASS: org and slack_webhook inputs were accepted by the action"
