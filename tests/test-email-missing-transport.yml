@@ -1,0 +1,39 @@
+name: Test email missing transport configuration
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      # Test that providing email_from and email_list without a valid transport
+      # (neither SES nor SMTP credentials) causes the action to fail.
+      # According to main.ts, this calls setFailed() with:
+      # "Invalid email config. Please check the wiki for more info: ..."
+      # With a fake token the API call will fail first, but either way
+      # the action should fail (not succeed).
+      - id: action
+        uses: .
+        with:
+          token: fake-token-for-testing
+          email_from: 'sender@example.com'
+          email_list: 'recipient@example.com'
+          count: '5'
+        continue-on-error: true
+
+      - name: Assert action failed (missing email transport causes failure)
+        env:
+          OUTCOME: ${{ steps.action.outcome }}
+        run: |
+          echo "outcome: $OUTCOME"
+          if [ -z "$OUTCOME" ]; then
+            echo "FAIL: step outcome should not be empty"
+            exit 1
+          fi
+          # The action should fail due to invalid token or missing email transport
+          if [ "$OUTCOME" = "success" ]; then
+            echo "FAIL: expected action to fail with invalid token/missing email transport, but it succeeded"
+            exit 1
+          fi
+          echo "PASS: action correctly failed with outcome: $OUTCOME"

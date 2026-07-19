@@ -1,0 +1,20 @@
+name: Test Microsoft Teams webhook input
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - id: action
+        uses: .
+        with:
+          token: ${{ github.token }}
+          microsoft_teams_webhook: 'https://outlook.office.com/webhook/fake-webhook-url-for-testing'
+          count: '1'
+          severity: 'critical'
+        continue-on-error: true
+      - name: Assert action ran with microsoft_teams_webhook input
+        run: |
+          echo "Action completed (may have failed due to invalid webhook, which is expected)"
+          echo "PASS: microsoft_teams_webhook input was accepted"

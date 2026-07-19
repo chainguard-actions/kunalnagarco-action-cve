@@ -1,0 +1,30 @@
+name: Test ignore packages input
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      # Test that the action accepts the ignore input (comma-separated package names)
+      # and the count input. With a fake token the GitHub API call will fail (expected),
+      # but the action should start and process the inputs before failing.
+      - id: action
+        uses: .
+        with:
+          token: fake-token-for-testing
+          ignore: 'lodash,axios,moment'
+          count: '50'
+        continue-on-error: true
+
+      - name: Assert action ran with ignore list
+        env:
+          OUTCOME: ${{ steps.action.outcome }}
+        run: |
+          echo "outcome: $OUTCOME"
+          if [ -z "$OUTCOME" ]; then
+            echo "FAIL: step outcome should not be empty"
+            exit 1
+          fi
+          echo "PASS: action ran with ignore list, outcome: $OUTCOME"

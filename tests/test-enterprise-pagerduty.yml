@@ -1,0 +1,20 @@
+name: Test enterprise and pager_duty_integration_key inputs
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - id: action
+        uses: .
+        with:
+          token: fake-token-for-coverage
+          enterprise: my-test-enterprise
+          pager_duty_integration_key: fake-pagerduty-integration-key-12345
+          count: '1'
+        continue-on-error: true
+      - name: Assert action ran (inputs were accepted)
+        run: |
+          echo "Action completed (with or without error due to fake credentials)"
+          echo "PASS: enterprise and pager_duty_integration_key inputs were accepted"

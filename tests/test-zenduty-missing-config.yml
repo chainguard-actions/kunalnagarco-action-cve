@@ -1,0 +1,38 @@
+name: Test Zenduty missing service ID and escalation policy ID
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      # Test that providing zenduty_api_key without zenduty_service_id and
+      # zenduty_escalation_policy_id causes the action to fail.
+      # According to main.ts, this calls setFailed() with:
+      # "Check your Zenduty Service ID and Escalation Policy ID"
+      # With a fake token the API call will fail first, but either way
+      # the action should fail (not succeed).
+      - id: action
+        uses: .
+        with:
+          token: fake-token-for-testing
+          zenduty_api_key: 'fake-zenduty-api-key'
+          count: '5'
+        continue-on-error: true
+
+      - name: Assert action failed (missing Zenduty config causes failure)
+        env:
+          OUTCOME: ${{ steps.action.outcome }}
+        run: |
+          echo "outcome: $OUTCOME"
+          if [ -z "$OUTCOME" ]; then
+            echo "FAIL: step outcome should not be empty"
+            exit 1
+          fi
+          # The action should fail due to invalid token or missing Zenduty config
+          if [ "$OUTCOME" = "success" ]; then
+            echo "FAIL: expected action to fail with invalid token/missing Zenduty config, but it succeeded"
+            exit 1
+          fi
+          echo "PASS: action correctly failed with outcome: $OUTCOME"

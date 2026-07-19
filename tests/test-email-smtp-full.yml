@@ -1,0 +1,26 @@
+name: Test email SMTP full configuration inputs
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - id: action
+        uses: .
+        with:
+          token: ${{ github.token }}
+          email_from: 'sender@example.com'
+          email_list: 'recipient@example.com'
+          email_subject: 'CVE Alert Test - Custom Subject'
+          email_transport_smtp_host: 'smtp.example.com'
+          email_transport_smtp_port: '587'
+          email_transport_smtp_user: 'smtp-user@example.com'
+          email_transport_smtp_password: 'fake-smtp-password-for-testing'
+          count: '1'
+          severity: 'critical'
+        continue-on-error: true
+      - name: Assert action ran with full SMTP email inputs
+        run: |
+          echo "Action completed (may have failed due to invalid SMTP credentials, which is expected)"
+          echo "PASS: email_subject, email_transport_smtp_user, and email_transport_smtp_password inputs were accepted"

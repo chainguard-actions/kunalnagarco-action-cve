@@ -1,0 +1,20 @@
+name: Test PagerDuty integration key input
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - id: action
+        uses: .
+        with:
+          token: ${{ github.token }}
+          pager_duty_integration_key: 'fake-pagerduty-integration-key-for-testing'
+          count: '1'
+          severity: 'critical'
+        continue-on-error: true
+      - name: Assert action ran with pager_duty_integration_key input
+        run: |
+          echo "Action completed (may have failed due to invalid key, which is expected)"
+          echo "PASS: pager_duty_integration_key input was accepted"

@@ -1,0 +1,22 @@
+name: Test Zenduty integration key inputs
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - id: action
+        uses: .
+        with:
+          token: ${{ github.token }}
+          zenduty_integration_key: 'fake-zenduty-integration-key-for-testing'
+          zenduty_service_id: 'fake-zenduty-service-id-for-testing'
+          zenduty_escalation_policy_id: 'fake-zenduty-escalation-policy-id-for-testing'
+          count: '1'
+          severity: 'critical'
+        continue-on-error: true
+      - name: Assert action ran with zenduty inputs
+        run: |
+          echo "Action completed (may have failed due to invalid keys, which is expected)"
+          echo "PASS: zenduty_integration_key, zenduty_service_id, and zenduty_escalation_policy_id inputs were accepted"

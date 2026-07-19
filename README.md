@@ -1,16 +1,14 @@
-# kunalnagarco/action-cve
+![marketing](https://user-images.githubusercontent.com/2741371/146811728-d2d9302b-f7f9-4296-82e3-e9812e562af9.png)
 
-Send GitHub vulnerability alerts to multiple platforms.
+## @kunalnagarco/action-cve
 
-Hardened by [Chainguard](https://www.chainguard.dev) from the upstream action at [https://github.com/kunalnagarco/action-cve](https://github.com/kunalnagarco/action-cve).
+A [GitHub action](https://github.com/features/actions) that sends Dependabot Vulnerability Alerts to multiple sources.
 
-## Versions
+**For more info and getting started, check out the [Wiki](https://github.com/kunalnagarco/action-cve/wiki).**
 
-| Version | Tag | Upstream commit |
-|---------|-----|-----------------|
-| v1.15.0 | [`v1.15.0`](https://github.com/chainguard-actions/kunalnagarco-action-cve/tree/v1.15.0) | [`8dd6d7c`](https://github.com/kunalnagarco/action-cve/commit/8dd6d7c4ab206bcd23a38d22c0811a12d39e1c18) |
-| v1.17.0 | [`v1.17.0`](https://github.com/chainguard-actions/kunalnagarco-action-cve/tree/v1.17.0) | [`81a6113`](https://github.com/kunalnagarco/action-cve/commit/81a6113aec959164f2c49c46c7e69e179ec94290) |
-| v1.17.1 | [`v1.17.1`](https://github.com/chainguard-actions/kunalnagarco-action-cve/tree/v1.17.1) | [`951daa5`](https://github.com/kunalnagarco/action-cve/commit/951daa5312fad22cd6e80a48440b5899704a82b9) |
+## Attributions
+
+- Bug icon: Made by Freepik from [https://www.flaticon.com/](https://www.flaticon.com/)
 
 ## Privacy
 
