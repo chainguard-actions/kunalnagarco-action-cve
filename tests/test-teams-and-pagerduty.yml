@@ -1,4 +1,4 @@
-name: Test Zenduty inputs
+name: Test Microsoft Teams and PagerDuty inputs
 on:
   workflow_dispatch:
 jobs:
@@ -11,11 +11,10 @@ jobs:
         continue-on-error: true
         with:
           token: ${{ github.token }}
-          zenduty_api_key: fake-zenduty-api-key-for-coverage
-          zenduty_service_id: fake-zenduty-service-id-for-coverage
-          zenduty_escalation_policy_id: fake-zenduty-escalation-policy-id-for-coverage
+          microsoft_teams_webhook: https://outlook.office.com/webhook/fake-teams-webhook
+          pager_duty_integration_key: fake-pagerduty-key-for-coverage
           count: 1
       - name: Assert action ran (input coverage check)
         run: |
           echo "Action completed (with or without error - input coverage is what matters)"
-          echo "PASS: zenduty_api_key, zenduty_service_id, and zenduty_escalation_policy_id inputs were passed"
+          echo "PASS: microsoft_teams_webhook and pager_duty_integration_key inputs were passed"
