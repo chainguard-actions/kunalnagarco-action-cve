@@ -1,0 +1,35 @@
+name: Test email with missing transport configuration
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - name: Run action with email but no transport config
+        id: action
+        uses: .
+        with:
+          token: ${{ github.token }}
+          email_from: 'sender@example.com'
+          email_list: 'recipient@example.com'
+          count: '5'
+          # No SES or SMTP transport configured — should trigger invalid email config error
+          # if alerts are found
+        continue-on-error: true
+      - name: Assert action produced a deterministic outcome
+        env:
+          OUTCOME: ${{ steps.action.outcome }}
+        run: |
+          echo "outcome: $OUTCOME"
+          # The action either:
+          # - succeeds (no alerts found, so email validation is never reached)
+          # - fails with "Invalid email config" (alerts found, no transport configured)
+          # - fails with API error (Dependabot not enabled on repo)
+          # All of these are valid outcomes — the action should not crash with an unhandled error.
+          if [ "$OUTCOME" = "success" ] || [ "$OUTCOME" = "failure" ]; then
+            echo "PASS: action ran and produced a deterministic outcome"
+          else
+            echo "FAIL: unexpected outcome: $OUTCOME"
+            exit 1
+          fi

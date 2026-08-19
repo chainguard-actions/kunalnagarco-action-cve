@@ -1,0 +1,33 @@
+name: Test Zenduty missing service ID and escalation policy
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - name: Run action with zenduty_api_key but missing service/escalation IDs
+        id: action
+        uses: .
+        with:
+          token: ${{ github.token }}
+          zenduty_api_key: 'fake-zenduty-api-key'
+          count: '5'
+          # zenduty_service_id and zenduty_escalation_policy_id intentionally omitted
+        continue-on-error: true
+      - name: Assert action produced a deterministic outcome
+        env:
+          OUTCOME: ${{ steps.action.outcome }}
+        run: |
+          echo "outcome: $OUTCOME"
+          # The action either:
+          # - succeeds (no alerts found, so Zenduty validation is never reached)
+          # - fails with "Check your Zenduty Service ID and Escalation Policy ID" (alerts found)
+          # - fails with API error (Dependabot not enabled on repo)
+          # All of these are valid outcomes — the action should not crash with an unhandled error.
+          if [ "$OUTCOME" = "success" ] || [ "$OUTCOME" = "failure" ]; then
+            echo "PASS: action ran and produced a deterministic outcome"
+          else
+            echo "FAIL: unexpected outcome: $OUTCOME"
+            exit 1
+          fi

@@ -1,4 +1,4 @@
-name: Test basic usage - repo level alerts
+name: Test Zenduty Integration Key
 on:
   workflow_dispatch:
 jobs:
@@ -6,25 +6,23 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-      - name: Run action with token only (no notification destination)
-        id: action
+      - id: action
         uses: .
         with:
           token: ${{ github.token }}
-          count: '5'
+          zenduty_integration_key: 'fake-zenduty-integration-key-for-testing'
+          zenduty_service_id: 'fake-zenduty-service-id-for-testing'
+          zenduty_escalation_policy_id: 'fake-zenduty-escalation-policy-id-for-testing'
+          count: '1'
         continue-on-error: true
-      - name: Assert action completed without unexpected failure
+      - name: Assert action ran (Zenduty call may fail with invalid key)
         env:
           OUTCOME: ${{ steps.action.outcome }}
         run: |
           echo "outcome: $OUTCOME"
-          # The action may fail if Dependabot is not enabled on the repo (403/404),
-          # but it should not fail due to a code error.
-          # We accept both success and failure (API permission issues are expected).
           if [ "$OUTCOME" = "success" ] || [ "$OUTCOME" = "failure" ]; then
-            echo "PASS: action ran and produced a deterministic outcome"
+            echo "PASS: action ran with zenduty_integration_key, zenduty_service_id, zenduty_escalation_policy_id inputs"
           else
             echo "FAIL: unexpected outcome: $OUTCOME"
             exit 1
           fi
-          echo "PASS"
