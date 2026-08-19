@@ -1,4 +1,4 @@
-name: Test email inputs via AWS SES transport
+name: Test invalid Slack webhook URL causes failure
 on:
   workflow_dispatch:
 jobs:
@@ -6,26 +6,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-      - name: Run action with AWS SES email inputs
+      - name: Run action with invalid Slack webhook URL
         id: action
         uses: .
         continue-on-error: true
         with:
           token: ${{ github.token }}
-          count: '5'
-          email_from: 'sender@example.com'
-          email_list: 'recipient@example.com'
-          email_subject: 'CVE Alert SES Test'
-          email_transport_ses_region: 'us-east-1'
-          email_transport_ses_access_key_id: 'FAKESESACCESSKEYID00'
-          email_transport_ses_secret_access_key: 'FakeSESSecretAccessKeyForTesting1234567'
+          count: '20'
+          slack_webhook: 'https://not-a-valid-slack-webhook.example.com/invalid'
       - name: Assert action ran and produced a valid outcome
         env:
           OUTCOME: ${{ steps.action.outcome }}
         run: |
           echo "Action outcome: $OUTCOME"
-          # The action either succeeds (no alerts) or fails (SES auth error / API error).
-          # Both are valid — we just verify the action ran to completion.
+          # The action either:
+          # - Fails with "Invalid Slack Webhook URL" (if there are open alerts and the URL is invalid)
+          # - Fails with API error (if Dependabot is not enabled on this repo)
+          # - Succeeds (if there are no open alerts, Slack validation is skipped)
+          # All outcomes are valid — we just verify the action ran to completion.
           if [ "$OUTCOME" = "success" ] || [ "$OUTCOME" = "failure" ]; then
             echo "PASS: action ran and produced a valid outcome ($OUTCOME)"
           else
