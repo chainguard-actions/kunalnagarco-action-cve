@@ -14,6 +14,7 @@ Hardened by [Chainguard](https://www.chainguard.dev) from the upstream action at
 | v1.17.3 | [`v1.17.3`](https://github.com/chainguard-actions/kunalnagarco-action-cve/tree/v1.17.3) | [`97cf213`](https://github.com/kunalnagarco/action-cve/commit/97cf2131ab6fc1c9892b431608fa3c686805a157) | [`HARDENING.md`](https://github.com/chainguard-actions/kunalnagarco-action-cve/blob/v1.17.3/HARDENING.md) |
 | v1.17.4 | [`v1.17.4`](https://github.com/chainguard-actions/kunalnagarco-action-cve/tree/v1.17.4) | [`26f8273`](https://github.com/kunalnagarco/action-cve/commit/26f8273bec78424aa6e2b9190fe84ecadfe331c0) | [`HARDENING.md`](https://github.com/chainguard-actions/kunalnagarco-action-cve/blob/v1.17.4/HARDENING.md) |
 | v1.17.5 | [`v1.17.5`](https://github.com/chainguard-actions/kunalnagarco-action-cve/tree/v1.17.5) | [`3efd813`](https://github.com/kunalnagarco/action-cve/commit/3efd8136c5417629168f6282d51a8295d2e0e54e) | [`HARDENING.md`](https://github.com/chainguard-actions/kunalnagarco-action-cve/blob/v1.17.5/HARDENING.md) |
+| v1.17.6 | [`v1.17.6`](https://github.com/chainguard-actions/kunalnagarco-action-cve/tree/v1.17.6) | [`0445d33`](https://github.com/kunalnagarco/action-cve/commit/0445d337cea5799408481eff87ca308c4cfa6aab) | [`HARDENING.md`](https://github.com/chainguard-actions/kunalnagarco-action-cve/blob/v1.17.6/HARDENING.md) |
 
 ## Privacy
 
